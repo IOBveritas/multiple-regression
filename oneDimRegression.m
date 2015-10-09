@@ -1,10 +1,9 @@
-function output = oneDimRegression( X, Y, r )
-%ONEDIMREGRESSION - function performs the one-dimentional polynomil
-%regression
+function result = oneDimRegression( X, Y, r )
+%Function performs the one-dimentional polynomial regression.
 %   X, Y - arrays of coordinates
 %   r - the power of the evaluative polynomial
-%   coefs - the coefficients of the polynomial
-%   Y(x) = A0 + A1 * x + A2 * x^2 + ... + Ar * x ^ r - the form of the polynomial
+%   result - the coefficients of the polynomial
+%   Y(x) = A0 + A1 * x + ... + Ar * x ^ r - the form of the polynomial
 
 %   first initialization
 n = numel(X);
@@ -33,10 +32,9 @@ if r > 0
         beta = sum( X.*(polyval(Q(j-1,end:-1:1),X).*polyval(Q(j-2,end:-1:1),X)) );
 
         %   lambda
-        lambda = sum( ((X - alpha).*polyval(Q(j-1,end:-1:1),X) - beta * polyval(Q(j-2,end:-1:1),X)).^2 );
-        lambda = sqrt(lambda);
+        lambda = sqrt(sum( ((X - alpha).*polyval(Q(j-1,end:-1:1),X) - beta * polyval(Q(j-2,end:-1:1),X)).^2 ));
 
-        %   next coefficient of Q
+        %   next polynomial of Q
         Q(j,1:j) = ([0 Q(j-1,:)] - alpha * [Q(j-1,:) 0] - beta * [Q(j-2,:) 0]) / lambda;
         
         %   calculation Wj
@@ -44,6 +42,6 @@ if r > 0
     end
 end
 
-output = W*Q;
+result = W*Q;
 
 end
