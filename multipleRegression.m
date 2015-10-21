@@ -1,4 +1,4 @@
-function result = multipleRegression(F)
+function result = multipleRegression(F, Coefs)
 %Function performs multi-dimentional polynomial regression.
 %   F - presentation of multiple polynomial, each row represent member of polynomial
 %   result - the coefficients of the polynomial
@@ -21,7 +21,7 @@ for k = 0:n
         C(1:end, k) = 0;
     end
     
-    [X, Y] = tryExperiment(C, [k fv]);
+    [X, Y] = tryExperiment(C, Coefs, k, fv);
     P = sum(C, 2);
     r = max(P);
     Q = oneDimRegression(X, Y, r);
@@ -36,4 +36,24 @@ for k = 0:n
 end
        
 result = A\B;
+end
+
+function result = fixVariable(varInd)
+    result = unifrnd(-5000, 5000);
+end
+
+function [rX rY] = tryExperiment(F, C, FixedVarInd, FixedVars)
+
+X = -5000:5000;
+Y = zeros(1, 10001);
+C = C.*(FixedVars.^F(1:end, FixedVarInd)');
+F(1:end, FixedVarInd) = 0;
+
+for i = 1:numel(X)
+    Y(i) = sum(C.*(sum(X(i).^F, 2)'));
+end
+
+rX = X;
+rY = Y;
+
 end
