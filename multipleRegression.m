@@ -21,16 +21,16 @@ for k = 0:n
         C(1:end, k) = 0;
     end
     
-    [X, Y] = tryExperiment(C, Coefs, k, fv);
+    [X, Y] = tryExperiment(F, Coefs, k, fv);
     P = sum(C, 2);
     r = max(P);
     Q = oneDimRegression(X, Y, r);
     
-    for i = 1:r
+    for i = 0:r
         ind = find(P==i);
         if ~isempty(ind) 
             S(end + 1, ind) = A(ind);
-            B(end + 1, 1) = Q(i);
+            B(end + 1, 1) = Q(i + 1);
         end
     end
 end
