@@ -3,7 +3,7 @@ function result = multipleRegression(F, Coefs)
 %   F - presentation of multiple polynomial, each row represent member of polynomial
 %   result - the coefficients of the polynomial
 %   n - number of variables x1, x2, ... , xn
-%   m - number of memers of the polynomial
+%   m - number of members of the polynomial
 
 [m, n] = size(F);
 
@@ -17,7 +17,7 @@ for k = 0:n
     fv = 0;
     if k > 0
         fv = fixVariable(k);
-        A = A.*(fv.^C(1:end, k)');
+        A = fv.^C(1:end, k)';
         C(1:end, k) = 0;
     end
     
@@ -35,7 +35,7 @@ for k = 0:n
     end
 end
        
-result = S\B;
+result = pinv(S)*B;
 end
 
 function result = fixVariable(varInd)
