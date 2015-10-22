@@ -35,28 +35,32 @@ for k = 0:n
     end
 end
        
-result = A\B;
+result = S\B;
 end
 
 function result = fixVariable(varInd)
     result = unifrnd(-5000, 5000);
 end
 
-function result = tryExperiment(F, C, FixedVarInd, FixedVars)
-
-n = numel(FixedVars);
-if n ~= numel(X) || n == 0
-    disp('incorrect input data');
-    return;
-end
+function [rX, rY] = tryExperiment(F, C, FixedVarInd, FixedVars)
 
 X = -5000:5000;
 Y = zeros(1, 10001);
-C = C.*(FixedVars.^F(1:end, FixedVarInd)');
-F(1:end, FixedVarInd) = 0;
+
+if FixedVarInd > 0
+    C = C.*(FixedVars.^F(1:end, FixedVarInd)');
+    F(1:end, FixedVarInd) = 0;
+end
 
 for i = 1:numel(X)
-    R = sum(X.^F, 2);
+    if X(i) ~= 0
+        Y(i) = sum(C.*(prod(X(i).^F, 2)'));
+    else
+        Y(i) = 0;
+    end
 end
+
+rX = X;
+rY = Y;
 
 end
