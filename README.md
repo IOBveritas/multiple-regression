@@ -1,1 +1,1 @@
-# multiple-regression
+# The program solves multiple polynomial regression problem
